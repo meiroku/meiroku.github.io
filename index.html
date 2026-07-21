@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:MONO@1&display=swap" rel="stylesheet">
+  <title>Meiroku</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100dvh;
+      font-family: "Google Sans Code", monospace;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "MONO" 1;
+      background-color: #ffffff;
+      color: #8c8c8c;
+    }
+
+    .clock {
+      text-align: center;
+    }
+
+    .label {
+      font-size: clamp(1rem, 4vw, 1.8rem);
+    }
+
+    .time {
+      font-size: clamp(3.5rem, 12vw, 6rem);
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+  <main class="clock">
+    <h1 class="label">Meiroku JST Clock</h1>
+    <time id="clock" class="time" aria-live="off">--:--:--</time>
+  </main>
+
+  <script>
+    const timeFormatter = new Intl.DateTimeFormat('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23'
+    });
+
+    const clockElement = document.getElementById('clock');
+
+    const updateJSTClock = () => {
+      const now = new Date();
+      
+      const formatted = timeFormatter.format(now);
+      clockElement.textContent = formatted;
+      
+      const delay = 1000 - now.getMilliseconds();
+      setTimeout(updateJSTClock, delay);
+    }
+    
+    updateJSTClock();
+  </script>
+</body>
+</html>
